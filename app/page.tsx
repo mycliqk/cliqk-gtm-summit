@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Share2, X } from "lucide-react";
 import { AnimatedCursor } from "@/components/animated-cursor";
+import { CountdownTimer } from "@/components/countdown-timer";
 
 type MarketerStatus = "available" | "claimed" | "active-bid";
 
@@ -17,56 +18,151 @@ interface Marketer {
 }
 
 const initialMarketers: Marketer[] = [
-  { id: "1", name: "Sarah Chen", company: "Glossier", role: "Chief Marketing Officer", status: "claimed" },
-  { id: "2", name: "Marcus Johnson", company: "Peloton", role: "VP of Growth", status: "available" },
-  { id: "3", name: "Emily Rodriguez", company: "Away", role: "Head of Brand", status: "active-bid" },
-  { id: "4", name: "David Kim", company: "Casper", role: "Director of Performance", status: "available" },
-  { id: "5", name: "Alexandra Petrov", company: "Warby Parker", role: "CMO", status: "claimed" },
-  { id: "6", name: "James Wright", company: "Allbirds", role: "Growth Lead", status: "available" },
-  { id: "7", name: "Mia Thompson", company: "Rent the Runway", role: "Brand Director", status: "available" },
-  { id: "8", name: "Nathan Park", company: "Harry's", role: "Performance Marketing Lead", status: "active-bid" },
-  { id: "9", name: "Olivia Santos", company: "Sweetgreen", role: "Chief Marketing Officer", status: "available" },
-  { id: "10", name: "Chris Anderson", company: "Outdoor Voices", role: "VP Growth Marketing", status: "claimed" },
-  { id: "11", name: "Jessica Liu", company: "Blue Apron", role: "Head of Brand Strategy", status: "available" },
-  { id: "12", name: "Ryan Mitchell", company: "Hims & Hers", role: "Director of Paid Media", status: "available" },
-  { id: "13", name: "Amanda Foster", company: "Everlane", role: "CMO", status: "active-bid" },
-  { id: "14", name: "Derek Huang", company: "WeWork", role: "Growth Marketing Manager", status: "available" },
-  { id: "15", name: "Sophia Martinez", company: "Mirror", role: "Creative Director", status: "claimed" },
-  { id: "16", name: "Tyler Brooks", company: "Ro", role: "Head of Performance", status: "available" },
-  { id: "17", name: "Rachel Green", company: "Bombas", role: "VP of Marketing", status: "available" },
-  { id: "18", name: "Kevin Patel", company: "Compass", role: "Growth Lead", status: "available" },
-  { id: "19", name: "Lauren Scott", company: "Reformation", role: "Brand Marketing Director", status: "active-bid" },
-  { id: "20", name: "Michael Torres", company: "Slice", role: "Performance Marketing Lead", status: "claimed" },
-  { id: "21", name: "Priya Sharma", company: "Squarespace", role: "VP of Marketing", status: "available" },
-  { id: "22", name: "Brandon Lee", company: "Oscar Health", role: "Growth Director", status: "available" },
-  { id: "23", name: "Nicole Adams", company: "Etsy", role: "Head of Brand", status: "active-bid" },
-  { id: "24", name: "Jordan Hayes", company: "Spotify NYC", role: "Senior Marketing Manager", status: "available" },
-  { id: "25", name: "Vanessa Cruz", company: "Framebridge", role: "CMO", status: "claimed" },
-  { id: "26", name: "Andrew Chen", company: "Flatiron Health", role: "VP Growth", status: "available" },
-  { id: "27", name: "Isabella Romano", company: "Daily Harvest", role: "Brand Director", status: "available" },
-  { id: "28", name: "William Park", company: "Teachable", role: "Head of Acquisition", status: "active-bid" },
-  { id: "29", name: "Samantha Wells", company: "Birchbox", role: "Marketing Director", status: "available" },
-  { id: "30", name: "Daniel Okafor", company: "Justworks", role: "VP of Marketing", status: "claimed" },
-  { id: "31", name: "Grace Kim", company: "Betterment", role: "Head of Growth", status: "available" },
-  { id: "32", name: "Ethan Miller", company: "Glossier", role: "Performance Lead", status: "available" },
-  { id: "33", name: "Zoe Washington", company: "Kickstarter", role: "Brand Marketing Lead", status: "active-bid" },
-  { id: "34", name: "Lucas Rivera", company: "Monday.com NYC", role: "Growth Manager", status: "available" },
-  { id: "35", name: "Hannah Goldberg", company: "Spring Health", role: "CMO", status: "available" },
-  { id: "36", name: "Omar Hassan", company: "Lemonade", role: "VP of Brand", status: "claimed" },
-  { id: "37", name: "Catherine Zhang", company: "Plaid", role: "Marketing Director", status: "available" },
-  { id: "38", name: "Jack Thompson", company: "Ramp", role: "Head of Growth", status: "available" },
-  { id: "39", name: "Aaliyah Brown", company: "ClassPass", role: "Senior Brand Manager", status: "active-bid" },
-  { id: "40", name: "Sebastian Morales", company: "Faire", role: "Performance Marketing Lead", status: "available" },
-  { id: "41", name: "Emma Wilson", company: "Notion NYC", role: "VP of Marketing", status: "available" },
-  { id: "42", name: "Noah Garcia", company: "Cockroach Labs", role: "Growth Lead", status: "claimed" },
-  { id: "43", name: "Lily Chen", company: "Attentive", role: "CMO", status: "available" },
-  { id: "44", name: "Mason Taylor", company: "Datadog", role: "Director of Demand Gen", status: "available" },
-  { id: "45", name: "Ava Nguyen", company: "Yieldstreet", role: "Head of Brand", status: "active-bid" },
-  { id: "46", name: "Benjamin Clark", company: "Thirty Madison", role: "VP Growth Marketing", status: "available" },
-  { id: "47", name: "Chloe Martin", company: "K Health", role: "Marketing Director", status: "available" },
-  { id: "48", name: "Dylan Patel", company: "Noom", role: "Head of Performance", status: "claimed" },
-  { id: "49", name: "Ella Robinson", company: "Calm", role: "Brand Strategy Lead", status: "available" },
-  { id: "50", name: "Finn O'Brien", company: "Stash", role: "Growth Marketing Manager", status: "available" },
+  { id: "1", name: "Roy Lee", company: "Cluely", role: "Founder", status: "available" },
+  { id: "2", name: "Vin Matano", company: "Creator Buzz", role: "Founder", status: "available" },
+  { id: "3", name: "Nik Sharma", company: "Sharma Brands", role: "Founder", status: "available" },
+  { id: "4", name: "Anson Lin", company: "Boardy", role: "Founder", status: "available" },
+  { id: "5", name: "Sean Hargrow", company: "Series", role: "Founder", status: "available" },
+  { id: "6", name: "Stan Rymkiewicz", company: "Default", role: "Founder", status: "available" },
+  { id: "7", name: "Sameer Kapur", company: "Glide", role: "Founder", status: "available" },
+  { id: "8", name: "Andy Karuza", company: "NachoNacho", role: "Founder", status: "available" },
+  { id: "9", name: "Austin Georgas", company: "Whop", role: "Founder", status: "available" },
+  { id: "10", name: "Ariel Rubin", company: "Air", role: "Founder", status: "available" },
+  { id: "11", name: "Zehra Naqvi", company: "Lore", role: "Founder", status: "available" },
+  { id: "12", name: "Oren John", company: "&vest", role: "Founder", status: "available" },
+  { id: "13", name: "Clayton Chambers", company: "Air", role: "Founder", status: "available" },
+  { id: "14", name: "David Fallarme", company: "Owner.com", role: "VP Marketing", status: "available" },
+  { id: "15", name: "Anita Kirkovska", company: "Vellum AI", role: "Head of Growth", status: "available" },
+  { id: "16", name: "Neel Murthy", company: "Rippling", role: "Head of Growth", status: "available" },
+  { id: "17", name: "Aura Benchetrat", company: "BlueCargo", role: "Head of Marketing", status: "available" },
+  { id: "18", name: "Yohan Sudheer", company: "Antimetal", role: "Head of Growth", status: "available" },
+  { id: "19", name: "Mitchell Anderson", company: "Symphony", role: "Founding GTM Lead", status: "available" },
+  { id: "20", name: "Jasdeep Lalli", company: "Weel", role: "Head of Content", status: "available" },
+  { id: "21", name: "Craig Cannon", company: "Supabase", role: "Head of DevRel", status: "available" },
+  { id: "22", name: "Louise Ng", company: "Tabs", role: "VP Marketing", status: "available" },
+  { id: "23", name: "Will Begeny", company: "Tomo", role: "VP Marketing", status: "available" },
+  { id: "24", name: "Lauren Brose", company: "Upsolve", role: "Head of Growth Marketing", status: "available" },
+  { id: "25", name: "James Buckley", company: "Thera", role: "Growth Marketing Manager", status: "available" },
+  { id: "26", name: "Madeline Kuttner", company: "Glossier", role: "Head of Growth Marketing", status: "available" },
+  { id: "27", name: "Henry Bell", company: "Starbridge", role: "Head of Growth", status: "available" },
+  { id: "28", name: "Jack Chen", company: "Riff.ai", role: "VP of Growth", status: "available" },
+  { id: "29", name: "Sheel Shah", company: "Startup", role: "Head of Growth", status: "available" },
+  { id: "30", name: "Emily Lonetto", company: "Vizcom", role: "Head of Marketing", status: "available" },
+  { id: "31", name: "Clair Simpson", company: "AI Marketing", role: "Founding Marketer", status: "available" },
+  { id: "32", name: "Madeleine Buras", company: "Tennr", role: "Marketing", status: "available" },
+  { id: "33", name: "Trevor Lynn", company: "GTM Leader", role: "CMO", status: "available" },
+  { id: "34", name: "Saaj Parikh", company: "Titan", role: "Senior Director, Marketing", status: "available" },
+  { id: "35", name: "Avante Price", company: "Posh", role: "CEO", status: "available" },
+  { id: "36", name: "Ryan Myher", company: "Genius", role: "COO & Founder", status: "available" },
+  { id: "37", name: "Saira Ashraf", company: "TradeZella", role: "Co-Founder & Head of Marketing", status: "available" },
+  { id: "38", name: "Natalie Riso", company: "Rho", role: "Marketing", status: "available" },
+  { id: "39", name: "David Wu", company: "Phantom", role: "Head of Growth", status: "available" },
+  { id: "40", name: "Bunmi Familoni", company: "Magic Spoon", role: "Head of Growth", status: "available" },
+  { id: "41", name: "Nathan Storey", company: "Unorthodox Ventures", role: "Founder", status: "available" },
+  { id: "42", name: "Fabiana Waxman", company: "Alinea Invest", role: "Head of Growth", status: "available" },
+  { id: "43", name: "Nicole Alonso", company: "Neo.Tax", role: "Head of Growth & Strategy", status: "available" },
+  { id: "44", name: "Danny Samoon", company: "Nucleus", role: "Growth", status: "available" },
+  { id: "45", name: "Bethany Catron", company: "Rhone", role: "CMO", status: "available" },
+  { id: "46", name: "Jimmy Bruton", company: "Via Carota", role: "CMO", status: "available" },
+  { id: "47", name: "Bene Eaton", company: "FIGS", role: "CMO", status: "available" },
+  { id: "48", name: "Kara Holinski", company: "Confido", role: "Co-founder/CTO", status: "available" },
+  { id: "49", name: "Marc Baghadjian", company: "Hyper", role: "CEO", status: "available" },
+  { id: "50", name: "Ben Sharf", company: "Platter", role: "Co-Founder", status: "available" },
+  { id: "51", name: "Andrew Yeung", company: "Fibe", role: "Founder", status: "available" },
+  { id: "52", name: "Max Marchione", company: "Superpower", role: "Founder", status: "available" },
+  { id: "53", name: "Lisa Popovici", company: "Siena AI", role: "Co-founder", status: "available" },
+  { id: "54", name: "Ashley Artrip", company: "Clay", role: "GTM Engineering Manager", status: "available" },
+  { id: "55", name: "Jaiya Gill", company: "Carry", role: "Marketing", status: "available" },
+  { id: "56", name: "Ankur Nagpal", company: "Silly Money", role: "Founder", status: "available" },
+  { id: "57", name: "Austin Rief", company: "Morning Brew", role: "Co-Founder", status: "available" },
+  { id: "58", name: "Jenny Sung", company: "Perplexity", role: "GTM", status: "available" },
+  { id: "59", name: "Crystal Sun", company: "Flourish Ventures", role: "Investor", status: "available" },
+  { id: "60", name: "Michael Wenner", company: "Domain Money", role: "Head of Growth", status: "available" },
+  { id: "61", name: "Ian Beaudoin", company: "Carta", role: "GTM", status: "available" },
+  { id: "62", name: "Will Ziesing", company: "Cursor", role: "GTM", status: "available" },
+  { id: "63", name: "Saffron Agrawal", company: "AI Safety", role: "Researcher", status: "available" },
+  { id: "64", name: "Ryan Waas", company: "Worldbuilder Co", role: "Founder", status: "available" },
+  { id: "65", name: "Sam Seiler", company: "Unify", role: "GTM", status: "available" },
+  { id: "66", name: "Horacio Lopez", company: "Replit", role: "BizOps", status: "available" },
+  { id: "67", name: "Oliver Brocato", company: "Bustem", role: "Founder", status: "available" },
+  { id: "68", name: "Nina Yiamsamatha", company: "Spotify", role: "Marketing", status: "available" },
+  { id: "69", name: "Nandini Mullaji", company: "Sitch", role: "Marketing", status: "available" },
+  { id: "70", name: "Dan McCormick", company: "Create Wellness", role: "Marketing", status: "available" },
+  { id: "71", name: "Katie Perry", company: "Zero Hash", role: "Marketing", status: "available" },
+  { id: "72", name: "Danielle Ito", company: "Notion", role: "Marketing", status: "available" },
+  { id: "73", name: "Tom Orbach", company: "Wiz", role: "Marketing", status: "available" },
+  { id: "74", name: "Ami Yoshimura", company: "Verci", role: "Marketing", status: "available" },
+  { id: "75", name: "Ankit Patel", company: "Obvi", role: "Founder", status: "available" },
+  { id: "76", name: "Dakota Rae Lowe", company: "Edelman", role: "Marketing", status: "available" },
+  { id: "77", name: "Alex Chung", company: "Chicago Booth", role: "Marketing", status: "available" },
+  { id: "78", name: "Shaan Arora", company: "Alia", role: "Marketing", status: "available" },
+  { id: "79", name: "Sarah Hunter", company: "Warp", role: "Marketing", status: "available" },
+  { id: "80", name: "Eve Halimi", company: "Alinea Invest", role: "Founder", status: "available" },
+  { id: "81", name: "Zayd Ali", company: "Valley", role: "Marketing", status: "available" },
+  { id: "82", name: "Sawyer Covington", company: "Timely AI", role: "Founder", status: "available" },
+  { id: "83", name: "Josh Kaplan", company: "Smooth Media", role: "Founder", status: "available" },
+  { id: "84", name: "Eli Weiss", company: "Yotpo", role: "Marketing", status: "available" },
+  { id: "85", name: "Jason Alco", company: "Popl", role: "Marketing", status: "available" },
+  { id: "86", name: "Kyle Joyce", company: "Enver", role: "Marketing", status: "available" },
+  { id: "87", name: "Dan Pantelo", company: "Marpipe", role: "Founder", status: "available" },
+  { id: "88", name: "Arjun Mahadevan", company: "Doola", role: "Founder", status: "available" },
+  { id: "89", name: "Joe Percoco", company: "Titan", role: "Founder", status: "available" },
+  { id: "90", name: "Brandon Beckhardt", company: "Kalshi", role: "Founder", status: "available" },
+  { id: "91", name: "Tarek Mansour", company: "Kalshi", role: "Founder", status: "available" },
+  { id: "92", name: "Paulina Westermann", company: "Taktile", role: "Founder", status: "available" },
+  { id: "93", name: "Maik Wehmeyer", company: "Taktile", role: "Founder", status: "available" },
+  { id: "94", name: "Sydney Bedient", company: "Mutiny", role: "Marketing", status: "available" },
+  { id: "95", name: "Misha Esipov", company: "Nova Credit", role: "Founder", status: "available" },
+  { id: "96", name: "Jacob Ballachino", company: "Artisan", role: "Marketing", status: "available" },
+  { id: "97", name: "Clayton Gardner", company: "Titan", role: "Founder", status: "available" },
+  { id: "98", name: "Matteo Franceschetti", company: "Eight Sleep", role: "Founder", status: "available" },
+  { id: "99", name: "Esther Katz", company: "EK Strategy", role: "CMO", status: "available" },
+  { id: "100", name: "Zuhair Lakhani", company: "Double Speed", role: "Founder", status: "available" },
+  { id: "101", name: "Mike Harp", company: "Harp&Co", role: "Fractional CMO", status: "available" },
+  { id: "102", name: "Mallory Contois", company: "Good Work", role: "VP Growth", status: "available" },
+  { id: "103", name: "Sam Wheatley", company: "Seed Health", role: "Growth Executive", status: "available" },
+  { id: "104", name: "Nathan Allebach", company: "Ramp", role: "Social Media Lead", status: "available" },
+  { id: "105", name: "Alessandro Bogliari", company: "Influencer Marketing Factory", role: "Founder", status: "available" },
+  { id: "106", name: "Alex M", company: "People Inc.", role: "Marketing", status: "available" },
+  { id: "107", name: "Caraline Pellatt", company: "Aymara", role: "Marketing", status: "available" },
+  { id: "108", name: "Angela Mascarenas", company: "AI Hot 100 Summit", role: "Founder", status: "available" },
+  { id: "109", name: "Alex Meredith", company: "Perplexity", role: "Marketing", status: "available" },
+  { id: "110", name: "Anuj G", company: "Wadr Law", role: "Founder", status: "available" },
+  { id: "111", name: "Dalton Pakkala", company: "ElevenLabs", role: "Social Media Manager", status: "available" },
+  { id: "112", name: "Allan Lvov", company: "Warp", role: "Marketing", status: "available" },
+  { id: "113", name: "Bhargav Patel", company: "Genuin", role: "Founder", status: "available" },
+  { id: "114", name: "Greggory Elias", company: "Agents for Hire", role: "Founder", status: "available" },
+  { id: "115", name: "Tom Shea", company: "Adgile Media", role: "Founder", status: "available" },
+  { id: "116", name: "Justin Wolz", company: "Rho", role: "Founder", status: "available" },
+  { id: "117", name: "Shriya Nevatia", company: "Superhuman", role: "Marketing", status: "available" },
+  { id: "118", name: "Jackson Engles", company: "Minerva", role: "Co-Founder & CEO", status: "available" },
+  { id: "119", name: "Phoebe Gates", company: "Phia", role: "Founder", status: "available" },
+  { id: "120", name: "Benzi Ronen", company: "Medida AI", role: "Co-Founder", status: "available" },
+  { id: "121", name: "Kalyani Ramadurgam", company: "Kobalt Labs", role: "Co-Founder", status: "available" },
+  { id: "122", name: "Mark Alayev", company: "Thread", role: "Founder", status: "available" },
+  { id: "123", name: "Ganesh Thirumurthi", company: "DataLane", role: "Co-Founder", status: "available" },
+  { id: "124", name: "Ross Mechanic", company: "Maybern", role: "Co-Founder/CEO", status: "available" },
+  { id: "125", name: "Kendall Kransdorf", company: "Cotto", role: "Founder", status: "available" },
+  { id: "126", name: "Mat Goldstein", company: "DealMaker", role: "Co-Founder", status: "available" },
+  { id: "127", name: "Eziah Syed", company: "MEND", role: "Founder", status: "available" },
+  { id: "128", name: "TJ Ademiluyi", company: "Alaffia Health", role: "CEO, Co-Founder", status: "available" },
+  { id: "129", name: "Anada Lakra", company: "BoldVoice", role: "Co-Founder & CEO", status: "available" },
+  { id: "130", name: "Alexander Korpassy", company: "Kalshi", role: "Social Media Manager", status: "available" },
+  { id: "131", name: "Marc Apicella", company: "Belidor", role: "Cofounder & CEO", status: "available" },
+  { id: "132", name: "Chris Zhu", company: "Donut", role: "Founder", status: "available" },
+  { id: "133", name: "Eilon Elhadad", company: "Echo", role: "Co-Founder & CEO", status: "available" },
+  { id: "134", name: "William Hayden", company: "Bags", role: "Co-Founder", status: "available" },
+  { id: "135", name: "Paul Erlanger", company: "Fomo", role: "Co-Founder", status: "available" },
+  { id: "136", name: "Ian Krotinsky", company: "Fin", role: "Co-Founder and CEO", status: "available" },
+  { id: "137", name: "Chloe Songer", company: "SuperCircle", role: "Co-Founder & CEO", status: "available" },
+  { id: "138", name: "Yannis Niebelschuetz", company: "LizzyAI", role: "Founder & CEO", status: "available" },
+  { id: "139", name: "Dean Palmiter", company: "Asseta AI", role: "CEO and Founder", status: "available" },
+  { id: "140", name: "Gonen Stein", company: "Eon", role: "President and Co-Founder", status: "available" },
+  { id: "141", name: "William Chen", company: "Liquid", role: "Founding Engineer", status: "available" },
+  { id: "142", name: "Eden Ovadia", company: "FINNY", role: "Co-Founder", status: "available" },
+  { id: "143", name: "Rohini Kalvakuntla", company: "Helex", role: "Co-Founder", status: "available" },
+  { id: "144", name: "Sophia Kianni", company: "Phia", role: "Founder", status: "available" },
+  { id: "145", name: "Rohan Suwarna", company: "Imprint", role: "Director, GTM Strategy", status: "available" },
 ];
 
 export default function Home() {
@@ -74,7 +170,7 @@ export default function Home() {
   const [claimingMarketer, setClaimingMarketer] = useState<Marketer | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [linkedInUrl, setLinkedInUrl] = useState("");
-  const [email, setEmail] = useState("");
+  const [showWelcome, setShowWelcome] = useState(true);
 
   const handleClaim = (id: string) => {
     const marketer = marketers.find((m) => m.id === id);
@@ -111,10 +207,13 @@ export default function Home() {
             <div className="w-8 h-8 rounded-lg bg-purple-600 shrink-0" />
             <span className="text-white/60 text-xs md:text-sm truncate">GTM Summit by <a href="https://mycliqk.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-white transition-colors duration-300">Cliqk</a></span>
           </div>
-          <button className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full bg-white/10 text-white/80 hover:bg-white/20 transition-all duration-300 text-xs md:text-sm shrink-0 hover:scale-105">
-            <Share2 className="w-4 h-4" />
-            <span className="hidden sm:inline">Share</span>
-          </button>
+          <div className="flex items-center gap-3 sm:gap-6">
+            <CountdownTimer />
+            <button className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full bg-white/10 text-white/80 hover:bg-white/20 transition-all duration-300 text-xs md:text-sm shrink-0 hover:scale-105">
+              <Share2 className="w-4 h-4" />
+              <span className="hidden sm:inline">Share</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -209,23 +308,23 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="px-4 pb-20 md:pb-28">
+      <section className="px-4 pb-16 md:pb-28">
         <div className="max-w-4xl mx-auto">
-          <p className="text-white/40 text-xs uppercase tracking-[0.2em] mb-4">The Process</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-16 md:mb-20 leading-tight">
+          <p className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] mb-3 md:mb-4">The Process</p>
+          <h2 className="text-2xl md:text-5xl font-bold text-white mb-10 md:mb-20 leading-tight">
             How it <span className="italic font-normal">works</span>
           </h2>
-          <div className="space-y-16 md:space-y-20">
+          <div className="space-y-10 md:space-y-20">
             {[
               { num: "01", title: "Browse the Directory", desc: "Explore NYC's top marketing professionals. Each card represents a leader in their field." },
               { num: "02", title: "Claim Your Ticket", desc: "Found yourself? Repost your profile on LinkedIn and submit the link to claim your exclusive invite." },
               { num: "03", title: "Attend GTM Summit", desc: "Join the gathering. Network with the best marketers in NYC and build lasting connections." },
-            ].map((step, index) => (
-              <div key={step.num} className="flex gap-6 md:gap-10 items-start">
-                <span className="text-purple-500 font-bold text-sm md:text-base shrink-0 pt-1">{step.num}</span>
+            ].map((step) => (
+              <div key={step.num} className="flex gap-4 md:gap-10 items-start">
+                <span className="text-purple-500 font-bold text-xs md:text-base shrink-0 pt-0.5 md:pt-1">{step.num}</span>
                 <div>
-                  <h3 className="text-white font-bold text-lg md:text-2xl mb-3">{step.title}</h3>
-                  <p className="text-white/50 text-sm md:text-base leading-relaxed max-w-md">{step.desc}</p>
+                  <h3 className="text-white font-bold text-base md:text-2xl mb-2 md:mb-3">{step.title}</h3>
+                  <p className="text-white/50 text-xs md:text-base leading-relaxed">{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -234,24 +333,24 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="px-4 pb-20 md:pb-28">
+      <section className="px-4 pb-16 md:pb-28">
         <div className="max-w-4xl mx-auto">
-          <p className="text-white/40 text-xs uppercase tracking-[0.2em] mb-4">Questions</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-16 md:mb-20 leading-tight">
+          <p className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] mb-3 md:mb-4">Questions</p>
+          <h2 className="text-2xl md:text-5xl font-bold text-white mb-10 md:mb-20 leading-tight">
             Frequently <span className="italic font-normal">Asked</span>
           </h2>
-          <div className="space-y-12 md:space-y-16">
-            <div className="border-t border-white/10 pt-8">
-              <h3 className="text-white font-bold text-lg md:text-xl mb-4">What is GTM Summit?</h3>
-              <p className="text-white/50 text-sm md:text-base leading-relaxed max-w-2xl">
+          <div className="space-y-8 md:space-y-16">
+            <div className="border-t border-white/10 pt-6 md:pt-8">
+              <h3 className="text-white font-bold text-sm md:text-xl mb-3 md:mb-4">What is GTM Summit?</h3>
+              <p className="text-white/50 text-xs md:text-base leading-relaxed">
                 GTM Summit is an <strong className="text-white">exclusive invite-only event</strong> hosted by{" "}
                 <a href="https://mycliqk.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors duration-300">Cliqk</a>{" "}
                 that brings together the best marketers in New York City. This curated gathering fosters meaningful connections between top marketing professionals, providing a unique opportunity to network, share insights, and collaborate with the most influential minds in the NYC marketing scene.
               </p>
             </div>
-            <div className="border-t border-white/10 pt-8">
-              <h3 className="text-white font-bold text-lg md:text-xl mb-4">Can I transfer my ticket to another marketer?</h3>
-              <p className="text-white/50 text-sm md:text-base leading-relaxed max-w-2xl">
+            <div className="border-t border-white/10 pt-6 md:pt-8">
+              <h3 className="text-white font-bold text-sm md:text-xl mb-3 md:mb-4">Can I transfer my ticket to another marketer?</h3>
+              <p className="text-white/50 text-xs md:text-base leading-relaxed">
                 <strong className="text-white">Yes, absolutely.</strong> If you have claimed a ticket but would like to transfer it to another deserving marketer, simply reach out to us at{" "}
                 <a href="https://mycliqk.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors duration-300">Cliqk</a>{" "}
                 with the details and we will facilitate the transfer. We encourage sharing this opportunity with fellow marketers.
@@ -262,26 +361,26 @@ export default function Home() {
       </section>
 
       {/* GTM Summit Event */}
-      <section className="px-4 pb-20 md:pb-32">
+      <section className="px-4 pb-16 md:pb-32">
         <div className="max-w-4xl mx-auto">
-          <p className="text-white/40 text-xs uppercase tracking-[0.2em] mb-4">The Event</p>
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+          <p className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] mb-3 md:mb-4">The Event</p>
+          <h2 className="text-3xl md:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight">
             GTM <span className="italic font-normal">Summit</span>
           </h2>
-          <p className="text-white/50 text-base md:text-lg mb-12 md:mb-16 max-w-xl leading-relaxed">
+          <p className="text-white/50 text-sm md:text-lg mb-8 md:mb-16 leading-relaxed">
             An invite-only gathering for <strong className="text-white">CMOs, growth leaders, founders</strong>, and social media operators building modern go-to-market engines.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-8 sm:gap-16 mb-12 md:mb-16">
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-16 mb-8 md:mb-16">
             <div>
-              <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-2">Location</p>
-              <p className="text-white font-bold text-base md:text-lg">404 Broadway, 2nd Floor</p>
-              <p className="text-white/50 text-sm">New York, NY</p>
+              <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-1 md:mb-2">Location</p>
+              <p className="text-white font-bold text-sm md:text-lg">404 Broadway, 2nd Floor</p>
+              <p className="text-white/50 text-xs md:text-sm">New York, NY</p>
             </div>
             <div>
-              <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-2">Hosted By</p>
-              <p className="text-white font-bold text-base md:text-lg">Ilias Anwar & Rohan Gurram</p>
-              <p className="text-white/50 text-sm">Cliqk</p>
+              <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-1 md:mb-2">Hosted By</p>
+              <p className="text-white font-bold text-sm md:text-lg">Ilias Anwar & Rohan Gurram</p>
+              <p className="text-white/50 text-xs md:text-sm">Cliqk</p>
             </div>
           </div>
           
@@ -289,7 +388,7 @@ export default function Home() {
             href="https://lu.ma/1gl9fcra"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-white font-bold text-sm md:text-base group"
+            className="inline-flex items-center gap-2 text-white font-bold text-xs md:text-base group"
           >
             Apply to Attend
             <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
@@ -355,6 +454,64 @@ export default function Home() {
       {showSuccess && (
         <div className="fixed bottom-4 md:bottom-8 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 bg-emerald-500 text-white px-4 md:px-6 py-3 rounded-xl md:rounded-full font-medium shadow-lg text-sm md:text-base text-center animate-slide-up-modal">
           Ticket claimed successfully!
+        </div>
+      )}
+
+      {/* Welcome Modal */}
+      {showWelcome && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="absolute inset-0 bg-black/95 animate-fade-in" onClick={() => setShowWelcome(false)} />
+          <div className="relative w-full sm:max-w-lg bg-zinc-950 border-t sm:border border-zinc-800/50 rounded-t-2xl sm:rounded-2xl p-6 sm:p-10 shadow-2xl animate-slide-up-modal max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setShowWelcome(false)}
+              className="absolute top-5 right-5 text-white/30 hover:text-white transition-colors duration-300"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            
+            <div className="mb-8 sm:mb-10">
+              <p className="text-white/40 text-[10px] sm:text-xs uppercase tracking-[0.2em] mb-4">GTM Summit NYC</p>
+              <h2 className="text-2xl sm:text-4xl font-bold text-white mb-4 sm:mb-5 leading-tight tracking-tight">
+                Best Marketers
+              </h2>
+              <p className="text-white/50 text-sm sm:text-base leading-relaxed">
+                The top 145 marketers in tech. Your $500 ticket is covered. Find your name, claim your spot.
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-6 mb-8 sm:mb-10 py-4 border-y border-white/10">
+              <div>
+                <CountdownTimer />
+              </div>
+            </div>
+            
+            <div className="space-y-4 mb-8 sm:mb-10">
+              <p className="text-white/70 text-xs sm:text-sm leading-relaxed">
+                Claim within 5 hours by reposting on LinkedIn. After that, your spot goes to open auction.
+              </p>
+              <p className="text-white/70 text-xs sm:text-sm leading-relaxed">
+                Not on the list? Repost for a chance to win a spot.
+              </p>
+            </div>
+            
+            <button
+              onClick={() => setShowWelcome(false)}
+              className="w-full py-4 bg-white text-black font-semibold rounded-lg transition-all duration-300 hover:bg-white/90 text-sm sm:text-base tracking-wide"
+            >
+              View the list
+            </button>
+            
+            <div className="mt-8 flex items-center justify-between">
+              <a href="https://mycliqk.com" target="_blank" rel="noopener noreferrer" className="opacity-40 hover:opacity-100 transition-opacity">
+                <img 
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image.png-FMBJmeYikcGmeEvbIzjxyZC6C7MrB4.jpeg" 
+                  alt="Cliqk" 
+                  className="h-5 sm:h-6 w-auto"
+                />
+              </a>
+              <span className="text-white/20 text-[10px] sm:text-xs tracking-wide">145 spots</span>
+            </div>
+          </div>
         </div>
       )}
     </main>

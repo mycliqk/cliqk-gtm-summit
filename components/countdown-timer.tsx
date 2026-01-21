@@ -10,9 +10,9 @@ interface TimeLeft {
 
 export function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    hours: 23,
-    minutes: 59,
-    seconds: 59,
+    hours: 5,
+    minutes: 0,
+    seconds: 0,
   });
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export function CountdownTimer() {
         } else if (prev.hours > 0) {
           return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
         }
-        return { hours: 23, minutes: 59, seconds: 59 };
+        return { hours: 0, minutes: 0, seconds: 0 };
       });
     }, 1000);
 
@@ -35,13 +35,16 @@ export function CountdownTimer() {
   const formatNumber = (num: number) => num.toString().padStart(2, "0");
 
   return (
-    <div className="text-center">
-      <p className="text-white/60 text-sm mb-1">You have</p>
-      <div className="text-4xl md:text-5xl font-bold text-white tracking-wider">
-        {formatNumber(timeLeft.hours)}:{formatNumber(timeLeft.minutes)}:
-        {formatNumber(timeLeft.seconds)}
+    <div className="text-right">
+      <div 
+        className="text-purple-400 text-base sm:text-xl md:text-2xl tracking-widest"
+        style={{ fontFamily: "'Courier New', 'Monaco', monospace", textShadow: "0 0 10px rgba(168, 85, 247, 0.5)" }}
+      >
+        {formatNumber(timeLeft.hours)}:{formatNumber(timeLeft.minutes)}:{formatNumber(timeLeft.seconds)}
       </div>
-      <p className="text-white/60 text-sm mt-1">to claim your spot</p>
+      <p className="text-white/40 text-[8px] sm:text-[10px] mt-1 uppercase tracking-wide">
+        Time left to claim your spot at GTM Summit
+      </p>
     </div>
   );
 }
