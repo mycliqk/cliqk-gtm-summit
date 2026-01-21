@@ -226,7 +226,10 @@ export default function Home() {
             <span className="text-purple-400"> Marketers</span>
             <span className="block text-2xl sm:text-3xl md:text-4xl mt-2 text-white/60 font-normal tracking-wide">NYC</span>
           </h1>
-          <p className="text-white/60 text-sm mb-6 animate-slide-up animation-delay-100">
+          <p className="text-white/50 text-sm sm:text-base max-w-md mb-4 animate-slide-up animation-delay-100 leading-relaxed">
+            We built this to bring together the best marketers in tech. If you are on this list, you have been personally invited to GTM Summit.
+          </p>
+          <p className="text-white/60 text-xs sm:text-sm mb-6 animate-slide-up animation-delay-100">
             GTM Summit by{" "}
             <a 
               href="https://mycliqk.com" 
