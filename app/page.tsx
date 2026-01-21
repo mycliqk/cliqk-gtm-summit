@@ -15,13 +15,14 @@ interface Marketer {
   company: string;
   role: string;
   status: MarketerStatus;
+  image?: string;
 }
 
 const initialMarketers: Marketer[] = [
   { id: "1", name: "Roy Lee", company: "Cluely", role: "Founder", status: "available" },
-  { id: "2", name: "Vin Matano", company: "Creator Buzz", role: "Founder", status: "available" },
-  { id: "3", name: "Nik Sharma", company: "Sharma Brands", role: "Founder", status: "available" },
-  { id: "4", name: "Anson Lin", company: "Boardy", role: "Founder", status: "available" },
+  { id: "2", name: "Vin Matano", company: "Creator Buzz", role: "Founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9YmtwFRzqI3y3XWglx0oKZjnEDb2sN.png" },
+  { id: "3", name: "Nik Sharma", company: "Sharma Brands", role: "Founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/a8ed85a1-f21b-4f6d-93b6-c789a91b371e-0OLwRViEsZtTju8LYx6G2Chngzw1bk.png" },
+  { id: "4", name: "Anson Lin", company: "Boardy", role: "Founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-8tbETGIsMqDKmxsdP2WW5NCo5AbyRN.png" },
   { id: "5", name: "Sean Hargrow", company: "Series", role: "Founder", status: "available" },
   { id: "6", name: "Stan Rymkiewicz", company: "Default", role: "Founder", status: "available" },
   { id: "7", name: "Sameer Kapur", company: "Glide", role: "Founder", status: "available" },
@@ -284,18 +285,26 @@ export default function Home() {
                   />
                 </div>
 
-                {/* Avatar */}
-                <div className="relative w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-3">
-                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-800 transition-transform duration-300 group-hover:scale-110">
-                    <span className="text-white text-lg md:text-xl font-serif font-bold">{marketer.name.charAt(0)}</span>
-                  </div>
+{/* Avatar */}
+                <div className="relative w-full aspect-square mb-2 md:mb-3">
+                  {marketer.image ? (
+                    <img 
+                      src={marketer.image} 
+                      alt={marketer.name}
+                      className="w-full h-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full rounded-lg flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-800 transition-transform duration-300 group-hover:scale-105">
+                      <span className="text-white text-3xl md:text-4xl font-bold">{marketer.name.charAt(0)}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Info */}
-                <div className="text-center">
+                <div className="text-center mt-auto">
                   <h3 className="font-semibold text-white text-xs md:text-sm truncate">{marketer.name}</h3>
                   <p className="text-white/60 text-[10px] md:text-xs truncate">{marketer.role}</p>
-                  <p className="text-purple-400 text-[10px] md:text-xs mt-1 truncate">{marketer.company}</p>
+                  <p className="text-purple-400 text-[10px] md:text-xs mt-0.5 truncate">{marketer.company}</p>
                 </div>
 
                 {/* Hover overlay for available cards */}
