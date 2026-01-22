@@ -19,7 +19,7 @@ interface Marketer {
 }
 
 const initialMarketers: Marketer[] = [
-  { id: "1", name: "Roy Lee", company: "Cluely", role: "Founder", status: "available" },
+  { id: "1", name: "Roy Lee", company: "Cluely", role: "Founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0542-cd7HEvMa8uHDjcMLFqM5XsJVvCNzMH.jpeg" },
   { id: "2", name: "Vin Matano", company: "Creator Buzz", role: "Founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9YmtwFRzqI3y3XWglx0oKZjnEDb2sN.png" },
   { id: "3", name: "Nik Sharma", company: "Sharma Brands", role: "Founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/a8ed85a1-f21b-4f6d-93b6-c789a91b371e-0OLwRViEsZtTju8LYx6G2Chngzw1bk.png" },
   { id: "4", name: "Anson Lin", company: "Boardy", role: "Founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-8tbETGIsMqDKmxsdP2WW5NCo5AbyRN.png" },
@@ -46,56 +46,56 @@ const initialMarketers: Marketer[] = [
   { id: "25", name: "James Buckley", company: "Thera", role: "Growth Marketing Manager", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-PdsbT9UAz5eCuRUoGiyVCyXIJDx3fJ.png" },
   { id: "26", name: "Madeline Kuttner", company: "Glossier", role: "Head of Growth Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/6-cA6vnf2ijKx2zwJpRPvCOET32rVLTd.png" },
   { id: "27", name: "Henry Bell", company: "Starbridge", role: "Head of Growth", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/7-nz5imzNPdjx4Gd4WbutsuaaWaEWuNN.png" },
-  { id: "28", name: "Jack Chen", company: "Riff.ai", role: "VP of Growth", status: "available" },
-  { id: "29", name: "Sheel Shah", company: "Startup", role: "Head of Growth", status: "available" },
-  { id: "30", name: "Emily Lonetto", company: "Vizcom", role: "Head of Marketing", status: "available" },
-  { id: "31", name: "Clair Simpson", company: "AI Marketing", role: "Founding Marketer", status: "available" },
-  { id: "32", name: "Madeleine Buras", company: "Tennr", role: "Marketing", status: "available" },
-  { id: "33", name: "Trevor Lynn", company: "GTM Leader", role: "CMO", status: "available" },
-  { id: "34", name: "Saaj Parikh", company: "Titan", role: "Senior Director, Marketing", status: "available" },
-  { id: "35", name: "Avante Price", company: "Posh", role: "CEO", status: "available" },
+  { id: "28", name: "Jack Chen", company: "Riff.ai", role: "VP of Growth", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/8-fhFEqnZ6ZatSDwUnQymx6KSlq3blvH.png" },
+  { id: "29", name: "Sheel Shah", company: "Startup", role: "Head of Growth", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9-puIWsTFj1vL1kG3e8NfZRl94d9YWu5.png" },
+  { id: "30", name: "Emily Lonetto", company: "Vizcom", role: "Head of Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/10-sXh3qJTimOsqKACWfAqCBFLZ16hGss.png" },
+  { id: "31", name: "Clair Simpson", company: "AI Marketing", role: "Founding Marketer", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/11-heXBzsofRxR79HilGyZ9MoQ02hL9Su.png" },
+  { id: "32", name: "Madeleine Buras", company: "Tennr", role: "Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/12-gEYuR7YGMw7xUbElKo2lrw1lMXGnyX.png" },
+  { id: "33", name: "Trevor Lynn", company: "GTM Leader", role: "CMO", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/13-XVrSRgANZQxPUVglncMdzYIFDHcqua.png" },
+  { id: "34", name: "Saaj Parikh", company: "Titan", role: "Senior Director, Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/14-hpTtDRrJkW6vGfL2ps9dKEfJChe06n.png" },
+  { id: "35", name: "Avante Price", company: "Posh", role: "CEO", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/15-PaecNf3l8qdm9M6ON7FX5Xn6PqviUd.png" },
   { id: "36", name: "Ryan Myher", company: "Genius", role: "COO & Founder", status: "available" },
-  { id: "37", name: "Saira Ashraf", company: "TradeZella", role: "Co-Founder & Head of Marketing", status: "available" },
+  { id: "37", name: "Saira Ashraf", company: "TradeZella", role: "Co-Founder & Head of Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9O8LCVqfiebYrhi8HhcLA0a0Uk9kqU.png" },
   { id: "38", name: "Natalie Riso", company: "Rho", role: "Marketing", status: "available" },
   { id: "39", name: "David Wu", company: "Phantom", role: "Head of Growth", status: "available" },
   { id: "40", name: "Bunmi Familoni", company: "Magic Spoon", role: "Head of Growth", status: "available" },
   { id: "41", name: "Nathan Storey", company: "Unorthodox Ventures", role: "Founder", status: "available" },
   { id: "42", name: "Fabiana Waxman", company: "Alinea Invest", role: "Head of Growth", status: "available" },
   { id: "43", name: "Nicole Alonso", company: "Neo.Tax", role: "Head of Growth & Strategy", status: "available" },
-  { id: "44", name: "Danny Samoon", company: "Nucleus", role: "Growth", status: "available" },
-  { id: "45", name: "Bethany Catron", company: "Rhone", role: "CMO", status: "available" },
+  { id: "44", name: "Danny Samoon", company: "Nucleus", role: "Growth", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Danny%20Samoon-1NQsko7xrQeobwRslbA1Veautl4mj9.png" },
+  { id: "45", name: "Bethany Catron", company: "Rhone", role: "CMO", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Bethany%20Catron%20Evans-j4RU74gsNyJG4fqlq2yLq0q2Lcf7MK.png" },
   { id: "46", name: "Jimmy Bruton", company: "Via Carota", role: "CMO", status: "available" },
-  { id: "47", name: "Bene Eaton", company: "FIGS", role: "CMO", status: "available" },
+  { id: "47", name: "Bene Eaton", company: "FIGS", role: "CMO", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ben%C3%A9%20Eaton-UptoGmeTSGIdYOMYGrU55MFK4FJL6Q.png" },
   { id: "48", name: "Kara Holinski", company: "Confido", role: "Co-founder/CTO", status: "available" },
   { id: "49", name: "Marc Baghadjian", company: "Hyper", role: "CEO", status: "available" },
   { id: "50", name: "Ben Sharf", company: "Platter", role: "Co-Founder", status: "available" },
-  { id: "51", name: "Andrew Yeung", company: "Fibe", role: "Founder", status: "available" },
+  { id: "51", name: "Andrew Yeung", company: "Fibe", role: "Founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Andrew%20Yeung-WTzNKapLch2YXQqajBkbj2QHar1nBd.png" },
   { id: "52", name: "Max Marchione", company: "Superpower", role: "Founder", status: "available" },
-  { id: "53", name: "Lisa Popovici", company: "Siena AI", role: "Co-founder", status: "available" },
+  { id: "53", name: "Lisa Popovici", company: "Siena AI", role: "Co-founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Lisa%20Popovici-050Fw2p3sJU9JIOG2zPbdr7taYbJYQ.png" },
   { id: "54", name: "Ashley Artrip", company: "Clay", role: "GTM Engineering Manager", status: "available" },
-  { id: "55", name: "Jaiya Gill", company: "Carry", role: "Marketing", status: "available" },
+  { id: "55", name: "Jaiya Gill", company: "Carry", role: "Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Jaiya%20Gill-NnvHDNLTGyD9IcmaCWK8CHkc4Q6NQL.png" },
   { id: "56", name: "Ankur Nagpal", company: "Silly Money", role: "Founder", status: "available" },
   { id: "57", name: "Austin Rief", company: "Morning Brew", role: "Co-Founder", status: "available" },
   { id: "58", name: "Jenny Sung", company: "Perplexity", role: "GTM", status: "available" },
   { id: "59", name: "Crystal Sun", company: "Flourish Ventures", role: "Investor", status: "available" },
   { id: "60", name: "Michael Wenner", company: "Domain Money", role: "Head of Growth", status: "available" },
   { id: "61", name: "Ian Beaudoin", company: "Carta", role: "GTM", status: "available" },
-  { id: "62", name: "Will Ziesing", company: "Cursor", role: "GTM", status: "available" },
+  { id: "62", name: "Will Ziesing", company: "Cursor", role: "GTM", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Will%20Ziesing-ij0K1sW2gfh7SPBvKZb4IHyypYItb8.png" },
   { id: "63", name: "Saffron Agrawal", company: "AI Safety", role: "Researcher", status: "available" },
   { id: "64", name: "Ryan Waas", company: "Worldbuilder Co", role: "Founder", status: "available" },
   { id: "65", name: "Sam Seiler", company: "Unify", role: "GTM", status: "available" },
   { id: "66", name: "Horacio Lopez", company: "Replit", role: "BizOps", status: "available" },
-  { id: "67", name: "Oliver Brocato", company: "Bustem", role: "Founder", status: "available" },
-  { id: "68", name: "Nina Yiamsamatha", company: "Spotify", role: "Marketing", status: "available" },
+  { id: "67", name: "Oliver Brocato", company: "Bustem", role: "Founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Oliver%20Brocato-A0ojpWWz4Jf3tUdJCXdlv59unoMAnU.png" },
+  { id: "68", name: "Nina Yiamsamatha", company: "Spotify", role: "Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Nina%20Yiamsamatha-GToPXgeNrKfAY86qwWZcv2rMRzmq5O.png" },
   { id: "69", name: "Nandini Mullaji", company: "Sitch", role: "Marketing", status: "available" },
   { id: "70", name: "Dan McCormick", company: "Create Wellness", role: "Marketing", status: "available" },
   { id: "71", name: "Katie Perry", company: "Zero Hash", role: "Marketing", status: "available" },
-  { id: "72", name: "Danielle Ito", company: "Notion", role: "Marketing", status: "available" },
-  { id: "73", name: "Tom Orbach", company: "Wiz", role: "Marketing", status: "available" },
-  { id: "74", name: "Ami Yoshimura", company: "Verci", role: "Marketing", status: "available" },
+  { id: "72", name: "Danielle Ito", company: "Notion", role: "Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Danielle%20Ito-L34PcIy03iAzACRwSsDdeXlmbcK2IF.png" },
+  { id: "73", name: "Tom Orbach", company: "Wiz", role: "Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Tom%20Orbach-2A2qPqegcIjJ4cz7zhoTUOg9O8CoOP.png" },
+  { id: "74", name: "Ami Yoshimura", company: "Verci", role: "Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ami%20Yoshimura-PLps5KQ461eQF7ZLoBb0PymmcBccd5.png" },
   { id: "75", name: "Ankit Patel", company: "Obvi", role: "Founder", status: "available" },
   { id: "76", name: "Dakota Rae Lowe", company: "Edelman", role: "Marketing", status: "available" },
-  { id: "77", name: "Alex Chung", company: "Chicago Booth", role: "Marketing", status: "available" },
+  { id: "77", name: "Alex Chung", company: "Chicago Booth", role: "Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Alex%20Chung-O1g3e1F0JgfxcZGQ3dhuK3gBUsFvPB.png" },
   { id: "78", name: "Shaan Arora", company: "Alia", role: "Marketing", status: "available" },
   { id: "79", name: "Sarah Hunter", company: "Warp", role: "Marketing", status: "available" },
   { id: "80", name: "Eve Halimi", company: "Alinea Invest", role: "Founder", status: "available" },
@@ -103,7 +103,7 @@ const initialMarketers: Marketer[] = [
   { id: "82", name: "Sawyer Covington", company: "Timely AI", role: "Founder", status: "available" },
   { id: "83", name: "Josh Kaplan", company: "Smooth Media", role: "Founder", status: "available" },
   { id: "84", name: "Eli Weiss", company: "Yotpo", role: "Marketing", status: "available" },
-  { id: "85", name: "Jason Alco", company: "Popl", role: "Marketing", status: "available" },
+  { id: "85", name: "Jason Alco", company: "Popl", role: "Marketing", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Jason%20Alco-nypRixUTO8PFS4deptKfDCFtLUyj7Z.png" },
   { id: "86", name: "Kyle Joyce", company: "Enver", role: "Marketing", status: "available" },
   { id: "87", name: "Dan Pantelo", company: "Marpipe", role: "Founder", status: "available" },
   { id: "88", name: "Arjun Mahadevan", company: "Doola", role: "Founder", status: "available" },
@@ -111,7 +111,7 @@ const initialMarketers: Marketer[] = [
   { id: "90", name: "Brandon Beckhardt", company: "Kalshi", role: "Founder", status: "available" },
   { id: "91", name: "Tarek Mansour", company: "Kalshi", role: "Founder", status: "available" },
   { id: "92", name: "Paulina Westermann", company: "Taktile", role: "Founder", status: "available" },
-  { id: "93", name: "Maik Wehmeyer", company: "Taktile", role: "Founder", status: "available" },
+  { id: "93", name: "Maik Wehmeyer", company: "Taktile", role: "Founder", status: "available", image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Maik%20Taro%20Wehmeyer-6mlFb9nytfhC9XPWfgRwnJr9E9RBhk.png" },
   { id: "94", name: "Sydney Bedient", company: "Mutiny", role: "Marketing", status: "available" },
   { id: "95", name: "Misha Esipov", company: "Nova Credit", role: "Founder", status: "available" },
   { id: "96", name: "Jacob Ballachino", company: "Artisan", role: "Marketing", status: "available" },
@@ -289,7 +289,7 @@ export default function Home() {
                 <div className="relative w-full aspect-square mb-2 md:mb-3">
                   {marketer.image ? (
                     <img 
-                      src={marketer.image} 
+                      src={marketer.image || "/placeholder.svg"} 
                       alt={marketer.name}
                       className="w-full h-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
                     />
@@ -516,7 +516,7 @@ export default function Home() {
             <div className="mt-8 flex items-center justify-between">
               <a href="https://mycliqk.com" target="_blank" rel="noopener noreferrer" className="opacity-40 hover:opacity-100 transition-opacity">
                 <img 
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image.png-FMBJmeYikcGmeEvbIzjxyZC6C7MrB4.jpeg" 
+                  src="/images/image.jpeg" 
                   alt="Cliqk" 
                   className="h-5 sm:h-6 w-auto"
                 />
