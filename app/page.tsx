@@ -185,7 +185,9 @@ export default function Home() {
 
       {/* Hero */}
       <section className="py-6 md:py-8 px-4 relative">
-        <AnimatedCursor />
+        <div className="hidden md:block">
+          <AnimatedCursor />
+        </div>
         <div className="max-w-6xl mx-auto relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-4 animate-slide-up tracking-tight">
             Best
@@ -256,6 +258,8 @@ export default function Home() {
                     <img 
                       src={marketer.image || "/placeholder.svg"} 
                       alt={marketer.name}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (

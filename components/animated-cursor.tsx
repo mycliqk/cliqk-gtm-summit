@@ -8,8 +8,11 @@ export function AnimatedCursor() {
     { id: 2, x: 70, y: 60 },
     { id: 3, x: 45, y: 45 },
   ]);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+    
     const interval = setInterval(() => {
       setCursors((prev) =>
         prev.map((cursor) => ({
@@ -22,6 +25,8 @@ export function AnimatedCursor() {
 
     return () => clearInterval(interval);
   }, []);
+
+  if (!isMounted) return null;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">

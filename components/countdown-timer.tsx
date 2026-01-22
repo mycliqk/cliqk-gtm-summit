@@ -14,8 +14,11 @@ export function CountdownTimer() {
     minutes: 0,
     seconds: 0,
   });
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+    
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev.seconds > 0) {
@@ -31,6 +34,22 @@ export function CountdownTimer() {
 
     return () => clearInterval(timer);
   }, []);
+
+  if (!isMounted) {
+    return (
+      <div className="text-right">
+        <div 
+          className="text-purple-400 text-base sm:text-xl md:text-2xl tracking-widest"
+          style={{ fontFamily: "'Courier New', 'Monaco', monospace", textShadow: "0 0 10px rgba(168, 85, 247, 0.5)" }}
+        >
+          05:00:00
+        </div>
+        <p className="text-white/40 text-[8px] sm:text-[10px] mt-1 uppercase tracking-wide">
+          Time left to claim your spot at GTM Summit
+        </p>
+      </div>
+    );
+  }
 
   const formatNumber = (num: number) => num.toString().padStart(2, "0");
 
