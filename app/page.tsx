@@ -170,7 +170,11 @@ export default function Home() {
       <header className="pt-6 md:pt-8 pb-4 px-4 animate-fade-in">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-purple-600 shrink-0" />
+            <img 
+              src="https://framerusercontent.com/images/tVGhpvWqKGrz0terIEGkBYTlHE.png" 
+              alt="Cliqk" 
+              className="w-8 h-8 rounded-lg shrink-0 object-contain"
+            />
             <span className="text-white/60 text-xs md:text-sm truncate">GTM Summit by <a href="https://mycliqk.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-white transition-colors duration-300">Cliqk</a></span>
           </div>
           <div className="flex items-center gap-3 sm:gap-6">
@@ -189,21 +193,20 @@ export default function Home() {
           <AnimatedCursor />
         </div>
         <div className="max-w-6xl mx-auto relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-4 animate-slide-up tracking-tight">
-            Best
-            <span className="text-purple-400"> Marketers</span>
-            <span className="block text-2xl sm:text-3xl md:text-4xl mt-2 text-white/60 font-normal tracking-wide">NYC</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-3 animate-slide-up tracking-tight leading-[1.1]">
+            Best Marketers
+            <span className="block text-white/50 font-medium mt-1">in NYC</span>
           </h1>
-          <p className="text-white/50 text-sm sm:text-base max-w-md mb-4 animate-slide-up animation-delay-100 leading-relaxed">
+          <p className="text-white/60 text-sm sm:text-base max-w-lg mb-5 animate-slide-up animation-delay-100 leading-relaxed font-normal">
             We built this to bring together the best marketers in tech. If you are on this list, you have been personally invited to GTM Summit.
           </p>
-          <p className="text-white/60 text-xs sm:text-sm mb-6 animate-slide-up animation-delay-100">
+          <p className="text-white/50 text-xs sm:text-sm mb-6 animate-slide-up animation-delay-100 font-medium">
             GTM Summit by{" "}
             <a 
               href="https://mycliqk.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="underline hover:text-white transition-colors duration-300"
+              className="text-white/70 hover:text-white transition-colors duration-300"
             >
               Cliqk
             </a>
