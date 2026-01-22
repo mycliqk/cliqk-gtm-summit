@@ -170,9 +170,9 @@ export default function Home() {
       <header className="pt-6 md:pt-8 pb-4 px-4 animate-fade-in">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 min-w-0">
-            <img 
-              src="https://framerusercontent.com/images/tVGhpvWqKGrz0terIEGkBYTlHE.png" 
-              alt="Cliqk" 
+            <img
+              src="/cliqk-logo.png"
+              alt="Cliqk"
               className="w-8 h-8 rounded-lg shrink-0 object-contain"
             />
             <span className="text-white/60 text-xs md:text-sm truncate">GTM Summit by <a href="https://mycliqk.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-white transition-colors duration-300">Cliqk</a></span>
@@ -392,8 +392,8 @@ export default function Home() {
               <X className="w-5 h-5" />
             </button>
             <div className="text-center mb-5 md:mb-6">
-              <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-3 md:mb-4 rounded-full flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-800">
-                <span className="text-white text-xl md:text-2xl font-serif font-bold">{claimingMarketer.name.charAt(0)}</span>
+              <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-3 md:mb-4 rounded-full flex items-center justify-center p-4" style={{ backgroundColor: '#25004D' }}>
+                <img src="/cliqk-logo.png" alt="Cliqk" className="w-full h-full object-contain" />
               </div>
               <h2 className="text-xl md:text-2xl font-serif font-bold text-white mb-1">Claim Your Ticket</h2>
               <p className="text-zinc-400 text-sm">
