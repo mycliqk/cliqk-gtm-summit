@@ -1,0 +1,136 @@
+# .github/workflows/linear-on-push.yml
+# Creates a Linear ticket on every push by Shawn and marks it Done.
+# Requires LINEAR_API_KEY as a GitHub repo secret.
+# Org: mycliqk
+
+name: Linear Auto-Ticket
+
+on:
+  push:
+    branches: ['*']
+
+jobs:
+  create-ticket:
+    runs-on: ubuntu-latest
+    # Only run for Shawn's pushes
+    if: github.actor == 'Screddyice'
+    steps:
+      - name: Create Linear ticket
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          set -euo pipefail
+
+          REPO="${{ github.repository }}"
+          REPO_NAME="${REPO##*/}"
+          BRANCH="${{ github.ref_name }}"
+          COMMIT_MSG=$(echo '${{ github.event.head_commit.message }}' | head -1)
+          COMMIT_SHA="${{ github.sha }}"
+          COMMIT_URL="https://github.com/${REPO}/commit/${COMMIT_SHA}"
+          PUSHER="${{ github.actor }}"
+
+          # ── Repo-to-team mapping ──
+          declare -A REPO_TEAM_MAP
+          REPO_TEAM_MAP[cliqkplatform]="DEV"
+          REPO_TEAM_MAP[cliqk-marketing-vehicle]="MKT"
+          REPO_TEAM_MAP[cliqkmya]="DEV"
+          REPO_TEAM_MAP[cliqkbrand]="MKT"
+          REPO_TEAM_MAP[cliqk_frontend]="DEV"
+          REPO_TEAM_MAP[cliqk_backend]="DEV"
+          REPO_TEAM_MAP[cliqk-human-agent]="DEV"
+          REPO_TEAM_MAP[cliqk-vibe-visualization]="DEV"
+          REPO_TEAM_MAP[cliqk_app]="DEV"
+          REPO_TEAM_MAP[cliqk-gtm-summit]="EVT"
+          REPO_TEAM_MAP[social-media-tracker]="MKT"
+
+          # ── Team IDs and Done state IDs ──
+          declare -A TEAM_IDS
+          TEAM_IDS[DEV]="6e44ca28-36a2-4d07-81ec-82ce8bd4eb87"
+          TEAM_IDS[MKT]="a0d7f604-97c6-442e-a92f-086d9bdbc491"
+          TEAM_IDS[SAL]="959f1d66-add8-4019-a9ae-90f3b0b012c6"
+          TEAM_IDS[EVT]="311e9fb0-5447-4723-b119-931d02f4b7ac"
+
+          declare -A DONE_IDS
+          DONE_IDS[DEV]="5eb2a680-57a3-4680-9adb-8906f97604f1"
+          DONE_IDS[MKT]="749d56da-8871-4deb-8468-11eed073df1d"
+          DONE_IDS[SAL]="128f6500-9f1a-4f79-9169-dbc862bf8b47"
+          DONE_IDS[EVT]="c2f9db9a-fb96-4ae1-8fdd-efc1b9b66557"
+
+          # Shawn's Linear user ID
+          ASSIGNEE_ID="5a69f3b1-97b0-441f-b925-8cccb69fa294"
+
+          # ── Resolve team ──
+          TEAM_KEY="${REPO_TEAM_MAP[$REPO_NAME]:-}"
+
+          # Keyword fallback if repo not mapped
+          if [ -z "$TEAM_KEY" ]; then
+            MSG_LOWER=$(echo "$COMMIT_MSG" | tr '[:upper:]' '[:lower:]')
+            if echo "$MSG_LOWER" | grep -qE "market|social|tweet|content|brand"; then
+              TEAM_KEY="MKT"
+            elif echo "$MSG_LOWER" | grep -qE "sale|lead|deal|prospect|crm"; then
+              TEAM_KEY="SAL"
+            elif echo "$MSG_LOWER" | grep -qE "event|conference|meetup|booth"; then
+              TEAM_KEY="EVT"
+            else
+              TEAM_KEY="DEV"
+            fi
+            echo "No repo mapping for $REPO_NAME, keyword fallback -> $TEAM_KEY"
+          fi
+
+          TEAM_ID="${TEAM_IDS[$TEAM_KEY]}"
+          DONE_ID="${DONE_IDS[$TEAM_KEY]}"
+
+          TITLE="${REPO_NAME}: ${COMMIT_MSG}"
+          # Truncate title to 200 chars
+          TITLE="${TITLE:0:200}"
+
+          DESCRIPTION="**Repo:** [${REPO_NAME}](https://github.com/${REPO})\\n**Branch:** ${BRANCH}\\n**Commit:** [${COMMIT_SHA:0:7}](${COMMIT_URL})\\n**Pushed by:** ${PUSHER}"
+
+          # ── Create ticket and mark Done ──
+          QUERY=$(cat <<'EOF'
+          mutation($input: IssueCreateInput!) {
+            issueCreate(input: $input) {
+              success
+              issue { identifier title url }
+            }
+          }
+          EOF
+          )
+
+          PAYLOAD=$(jq -n \
+            --arg title "$TITLE" \
+            --arg desc "$DESCRIPTION" \
+            --arg teamId "$TEAM_ID" \
+            --arg stateId "$DONE_ID" \
+            --arg assigneeId "$ASSIGNEE_ID" \
+            --arg query "$QUERY" \
+            '{
+              query: $query,
+              variables: {
+                input: {
+                  title: $title,
+                  description: $desc,
+                  teamId: $teamId,
+                  stateId: $stateId,
+                  assigneeId: $assigneeId,
+                  priority: 4
+                }
+              }
+            }')
+
+          RESPONSE=$(curl -s -X POST https://api.linear.app/graphql \
+            -H "Authorization: ${LINEAR_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")
+
+          SUCCESS=$(echo "$RESPONSE" | jq -r '.data.issueCreate.success // false')
+          TICKET_ID=$(echo "$RESPONSE" | jq -r '.data.issueCreate.issue.identifier // "N/A"')
+          TICKET_URL=$(echo "$RESPONSE" | jq -r '.data.issueCreate.issue.url // "N/A"')
+
+          if [ "$SUCCESS" = "true" ]; then
+            echo "✅ Created $TICKET_ID (Done) -> $TICKET_URL"
+          else
+            echo "❌ Failed to create ticket"
+            echo "$RESPONSE" | jq .
+            exit 1
+          fi
