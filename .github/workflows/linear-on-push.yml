@@ -1,0 +1,223 @@
+# .github/workflows/linear-on-push.yml
+# Analyzes each push, creates a properly named/described Linear ticket in the right team.
+# Marked Done, assigned to Shawn. Uses Claude for smart categorization.
+# Org: mycliqk
+
+name: Linear Auto-Ticket
+
+on:
+  push:
+    branches: ['*']
+
+jobs:
+  create-ticket:
+    runs-on: ubuntu-latest
+    if: github.actor == 'Screddyice'
+    steps:
+      - name: Checkout for context
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Gather commit context
+        id: context
+        run: |
+          set -euo pipefail
+
+          # Commit info
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          FILES_CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only HEAD)
+          DIFF_STAT=$(git diff --stat HEAD~1 HEAD 2>/dev/null || git diff --stat HEAD)
+          FILE_COUNT=$(echo "$FILES_CHANGED" | wc -l)
+
+          # Save to env files (handles multiline)
+          echo "COMMIT_MSG<<ENDMSG" >> "$GITHUB_ENV"
+          echo "$COMMIT_MSG" >> "$GITHUB_ENV"
+          echo "ENDMSG" >> "$GITHUB_ENV"
+
+          echo "FILES_CHANGED<<ENDFILES" >> "$GITHUB_ENV"
+          echo "$FILES_CHANGED" >> "$GITHUB_ENV"
+          echo "ENDFILES" >> "$GITHUB_ENV"
+
+          echo "DIFF_STAT<<ENDDIFF" >> "$GITHUB_ENV"
+          echo "$DIFF_STAT" >> "$GITHUB_ENV"
+          echo "ENDDIFF" >> "$GITHUB_ENV"
+
+          echo "FILE_COUNT=$FILE_COUNT" >> "$GITHUB_ENV"
+
+      - name: Analyze and create ticket
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+
+          REPO="${{ github.repository }}"
+          REPO_NAME="${REPO##*/}"
+          BRANCH="${{ github.ref_name }}"
+          COMMIT_SHA="${{ github.sha }}"
+          COMMIT_URL="https://github.com/${REPO}/commit/${COMMIT_SHA}"
+          PUSHER="${{ github.actor }}"
+
+          # ── Team IDs and Done state IDs ──
+          declare -A TEAM_IDS
+          TEAM_IDS[DEV]="6e44ca28-36a2-4d07-81ec-82ce8bd4eb87"
+          TEAM_IDS[MKT]="a0d7f604-97c6-442e-a92f-086d9bdbc491"
+          TEAM_IDS[SAL]="959f1d66-add8-4019-a9ae-90f3b0b012c6"
+          TEAM_IDS[EVT]="311e9fb0-5447-4723-b119-931d02f4b7ac"
+
+          declare -A DONE_IDS
+          DONE_IDS[DEV]="5eb2a680-57a3-4680-9adb-8906f97604f1"
+          DONE_IDS[MKT]="749d56da-8871-4deb-8468-11eed073df1d"
+          DONE_IDS[SAL]="128f6500-9f1a-4f79-9169-dbc862bf8b47"
+          DONE_IDS[EVT]="c2f9db9a-fb96-4ae1-8fdd-efc1b9b66557"
+
+          ASSIGNEE_ID="5a69f3b1-97b0-441f-b925-8cccb69fa294"
+
+          # ── Ask Claude to analyze the commit ──
+          CLAUDE_PROMPT=$(cat <<PROMPT
+          You are categorizing a GitHub commit for a Linear project management ticket.
+
+          REPO: ${REPO_NAME}
+          BRANCH: ${BRANCH}
+          COMMIT MESSAGE:
+          ${COMMIT_MSG}
+
+          FILES CHANGED (${FILE_COUNT} files):
+          ${FILES_CHANGED}
+
+          DIFF STATS:
+          ${DIFF_STAT}
+
+          AVAILABLE LINEAR TEAMS:
+          - DEV: Development — code, infrastructure, backend, frontend, APIs, DevOps, CI/CD, tooling, configs
+          - MKT: Marketing — social media, content, analytics dashboards, branding, campaigns, growth, SEO
+          - SAL: Sales — CRM, leads, deals, outreach, prospecting, pricing, proposals
+          - EVT: Events — conferences, summits, meetups, event planning, sponsorships
+
+          Respond with EXACTLY this JSON format, nothing else:
+          {
+            "team": "DEV or MKT or SAL or EVT",
+            "title": "short descriptive task title (what was actually done, not the raw commit message — e.g. 'Add user authentication to API' or 'Fix dashboard loading performance')",
+            "description": "2-3 sentence summary of what this commit does and why it matters. Reference specific files/features changed."
+          }
+          PROMPT
+          )
+
+          CLAUDE_RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
+            -H "x-api-key: ${ANTHROPIC_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "anthropic-version: 2023-06-01" \
+            -d "$(jq -n \
+              --arg prompt "$CLAUDE_PROMPT" \
+              '{
+                model: "claude-sonnet-4-5-20250929",
+                max_tokens: 300,
+                messages: [{role: "user", content: $prompt}]
+              }')" \
+            | jq -r '.content[0].text // empty')
+
+          # Parse Claude's response
+          TEAM_KEY=$(echo "$CLAUDE_RESPONSE" | jq -r '.team // empty' 2>/dev/null || echo "")
+          TITLE=$(echo "$CLAUDE_RESPONSE" | jq -r '.title // empty' 2>/dev/null || echo "")
+          AI_DESC=$(echo "$CLAUDE_RESPONSE" | jq -r '.description // empty' 2>/dev/null || echo "")
+
+          # Fallback if Claude fails
+          if [ -z "$TEAM_KEY" ] || [ -z "$TITLE" ]; then
+            echo "Claude analysis failed, using fallback"
+            TITLE="${REPO_NAME}: $(echo "$COMMIT_MSG" | head -1)"
+            TITLE="${TITLE:0:200}"
+            AI_DESC="Automated commit tracking."
+
+            # Fallback team routing
+            declare -A REPO_TEAM_MAP
+            REPO_TEAM_MAP[cliqkplatform]="DEV"
+            REPO_TEAM_MAP[cliqk-marketing-vehicle]="MKT"
+            REPO_TEAM_MAP[cliqkmya]="DEV"
+            REPO_TEAM_MAP[cliqkbrand]="MKT"
+            REPO_TEAM_MAP[cliqk_frontend]="DEV"
+            REPO_TEAM_MAP[cliqk_backend]="DEV"
+            REPO_TEAM_MAP[cliqk-human-agent]="DEV"
+            REPO_TEAM_MAP[cliqk-vibe-visualization]="DEV"
+            REPO_TEAM_MAP[cliqk_app]="DEV"
+            REPO_TEAM_MAP[cliqk-gtm-summit]="EVT"
+            REPO_TEAM_MAP[social-media-tracker]="MKT"
+            REPO_TEAM_MAP[x-machine]="MKT"
+            REPO_TEAM_MAP[reddit-machine]="MKT"
+            REPO_TEAM_MAP[cliqk-meeting-assistant]="DEV"
+            REPO_TEAM_MAP[linear-ticket-auto]="DEV"
+            REPO_TEAM_MAP[omnichannel_dashboard]="DEV"
+
+            TEAM_KEY="${REPO_TEAM_MAP[$REPO_NAME]:-DEV}"
+          fi
+
+          # Validate team key
+          if [ -z "${TEAM_IDS[$TEAM_KEY]+x}" ]; then
+            echo "Invalid team key '$TEAM_KEY', defaulting to DEV"
+            TEAM_KEY="DEV"
+          fi
+
+          TEAM_ID="${TEAM_IDS[$TEAM_KEY]}"
+          DONE_ID="${DONE_IDS[$TEAM_KEY]}"
+
+          # Build full description
+          DESCRIPTION="**${AI_DESC}**\n\n"
+          DESCRIPTION+="---\n"
+          DESCRIPTION+="**Repo:** [${REPO_NAME}](https://github.com/${REPO})\n"
+          DESCRIPTION+="**Branch:** \`${BRANCH}\`\n"
+          DESCRIPTION+="**Commit:** [\`${COMMIT_SHA:0:7}\`](${COMMIT_URL})\n"
+          DESCRIPTION+="**Files changed:** ${FILE_COUNT}\n\n"
+
+          # Add file list (truncated)
+          FILE_LIST=$(echo "$FILES_CHANGED" | head -15)
+          REMAINING=$((FILE_COUNT - 15))
+          DESCRIPTION+="**Changed files:**\n"
+          while IFS= read -r f; do
+            [ -n "$f" ] && DESCRIPTION+="- \`${f}\`\n"
+          done <<< "$FILE_LIST"
+          if [ "$REMAINING" -gt 0 ]; then
+            DESCRIPTION+="- ... and ${REMAINING} more\n"
+          fi
+
+          echo "Team: $TEAM_KEY | Title: $TITLE"
+
+          # ── Create ticket ──
+          QUERY='mutation($input: IssueCreateInput!) { issueCreate(input: $input) { success issue { identifier title url } } }'
+
+          PAYLOAD=$(jq -n \
+            --arg title "$TITLE" \
+            --arg desc "$DESCRIPTION" \
+            --arg teamId "$TEAM_ID" \
+            --arg stateId "$DONE_ID" \
+            --arg assigneeId "$ASSIGNEE_ID" \
+            --arg query "$QUERY" \
+            '{
+              query: $query,
+              variables: {
+                input: {
+                  title: $title,
+                  description: $desc,
+                  teamId: $teamId,
+                  stateId: $stateId,
+                  assigneeId: $assigneeId,
+                  priority: 4
+                }
+              }
+            }')
+
+          RESPONSE=$(curl -s -X POST https://api.linear.app/graphql \
+            -H "Authorization: ${LINEAR_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")
+
+          SUCCESS=$(echo "$RESPONSE" | jq -r '.data.issueCreate.success // false')
+          TICKET_ID=$(echo "$RESPONSE" | jq -r '.data.issueCreate.issue.identifier // "N/A"')
+          TICKET_URL=$(echo "$RESPONSE" | jq -r '.data.issueCreate.issue.url // "N/A"')
+
+          if [ "$SUCCESS" = "true" ]; then
+            echo "Created $TICKET_ID [$TEAM_KEY/Done] -> $TICKET_URL"
+          else
+            echo "Failed to create ticket"
+            echo "$RESPONSE" | jq .
+            exit 1
+          fi
