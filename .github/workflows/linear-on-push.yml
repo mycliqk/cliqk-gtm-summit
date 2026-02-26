@@ -8,6 +8,9 @@ name: Linear Auto-Ticket
 on:
   push:
     branches: ['*']
+    paths-ignore:
+      - '.github/workflows/**'
+      - '.github/**'
 
 jobs:
   create-ticket:
